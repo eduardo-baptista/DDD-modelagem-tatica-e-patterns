@@ -11,6 +11,13 @@ describe("Customer unit tests", () => {
 		expect(() => new Customer("123", "")).toThrow("Name is required");
 	});
 
+	it("should register event when create a customer", () => {
+		const customer = new Customer("123", "Name");
+
+		expect(customer.id).toBe("123");
+		expect(customer.events).toHaveLength(1);
+	});
+
 	it("should change name", () => {
 		const customer = new Customer("123", "Name");
 		customer.changeName("New Name");

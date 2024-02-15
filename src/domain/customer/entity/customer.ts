@@ -1,6 +1,8 @@
+import { AggregateRoot } from "../../@shared/entity/aggregate-root";
+import { CustomerCreateEvent } from "../event/customer-created.event";
 import type { Address } from "../value-object/address";
 
-export class Customer {
+export class Customer extends AggregateRoot {
 	private _id: string;
 	private _name: string;
 	private _address!: Address;
@@ -8,9 +10,12 @@ export class Customer {
 	private _rewardPoints = 0;
 
 	constructor(id: string, name: string) {
+		super();
 		this._id = id;
 		this._name = name;
 		this.validate();
+
+		this.addEvent(new CustomerCreateEvent(id, name));
 	}
 
 	get id(): string {
