@@ -1,3 +1,4 @@
+import type { AggregateRoot } from "../entity/aggregate-root";
 import type { EventDispatcherInterface } from "./event-dispatcher.interface";
 import type { EventHandlerInterface } from "./event-handler.interface";
 import type { EventInterface } from "./event.interface";
@@ -11,13 +12,16 @@ export class EventDispatcher implements EventDispatcherInterface {
 		return this.eventHandlers.get(eventName) || [];
 	}
 
-	notify<T>(event: EventInterface<T>): void {
-		const eventName = event.constructor.name;
-		const handlers = this.getEventHandlers(eventName);
+	notify(aggregate: AggregateRoot): void {
+		for (const event of aggregate.events) {
+			const eventName = event.constructor.name;
+			const handlers = this.getEventHandlers(eventName);
 
-		for (const handler of handlers) {
-			handler.handle(event);
+			for (const handler of handlers) {
+				handler.handle(event);
+			}
 		}
+		aggregate.clearEvents();
 	}
 
 	register<T>(eventName: string, eventHandler: EventHandlerInterface<T>): void {

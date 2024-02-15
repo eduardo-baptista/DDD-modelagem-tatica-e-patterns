@@ -1,11 +1,13 @@
+import { AggregateRoot } from "../../@shared/entity/aggregate-root";
 import type { ProductInterface } from "./product.interface";
 
-export class Product implements ProductInterface {
+export class Product extends AggregateRoot implements ProductInterface {
 	private _id: string;
 	private _name: string;
 	private _price: number;
 
 	constructor(id: string, name: string, price: number) {
+		super();
 		this._id = id;
 		this._name = name;
 		this._price = price;

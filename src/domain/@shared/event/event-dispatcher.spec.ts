@@ -2,6 +2,7 @@ import { describe, expect, it, spyOn } from "bun:test";
 import { EventDispatcher } from "./event-dispatcher";
 import { SendEmailWhenProductIsCreatedHandler } from "../../product/event/handler/send-email-when-product-is-created.handler";
 import { ProductCreatedEvent } from "../../product/event/product-created.event";
+import { Product } from "../../product/entity/product";
 
 describe("Domain events tests", () => {
 	it("should register an event handler", () => {
@@ -72,7 +73,10 @@ describe("Domain events tests", () => {
 			price: 100,
 		});
 
-		eventDispatcher.notify(productCreatedEvent);
+		const product = new Product("1", "Product", 100);
+		product.addEvent(productCreatedEvent);
+
+		eventDispatcher.notify(product);
 
 		expect(spyEventHandler).toHaveBeenCalled();
 	});
