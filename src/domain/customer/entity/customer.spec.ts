@@ -12,7 +12,7 @@ describe("Customer unit tests", () => {
 	});
 
 	it("should register event when create a customer", () => {
-		const customer = new Customer("123", "Name");
+		const customer = Customer.create("123", "Name");
 
 		expect(customer.id).toBe("123");
 		expect(customer.events).toHaveLength(1);
@@ -25,10 +25,20 @@ describe("Customer unit tests", () => {
 		expect(customer.name).toBe("New Name");
 	});
 
+	it("should register event when change address", () => {
+		const customer = new Customer("123", "Name");
+		const address = new Address("Rua 1", 123, "12345-123", "São Paulo");
+
+		customer.changeAddress(address);
+
+		expect(customer.address).toBe(address);
+		expect(customer.events).toHaveLength(1);
+	});
+
 	it("should activate customer", () => {
 		const customer = new Customer("123", "Name");
 		const address = new Address("Rua 1", 123, "12345-123", "São Paulo");
-		customer.address = address;
+		customer.changeAddress(address);
 		customer.activate();
 
 		expect(customer.isActive()).toBe(true);

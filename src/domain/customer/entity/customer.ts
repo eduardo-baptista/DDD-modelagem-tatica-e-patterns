@@ -1,4 +1,5 @@
 import { AggregateRoot } from "../../@shared/entity/aggregate-root";
+import { CustomerAddressChangeEvent } from "../event/customer-address-change.event";
 import { CustomerCreateEvent } from "../event/customer-created.event";
 import type { Address } from "../value-object/address";
 
@@ -14,8 +15,13 @@ export class Customer extends AggregateRoot {
 		this._id = id;
 		this._name = name;
 		this.validate();
+	}
 
-		this.addEvent(new CustomerCreateEvent(id, name));
+	static create(id: string, name: string) {
+		const customer = new Customer(id, name);
+		customer.addEvent(new CustomerCreateEvent(id, name));
+
+		return customer;
 	}
 
 	get id(): string {
@@ -36,7 +42,20 @@ export class Customer extends AggregateRoot {
 
 	set address(address: Address) {
 		this._address = address;
+	}
+
+	changeAddress(address: Address) {
+		this._address = address;
 		this._address.validate();
+
+		this.addEvent(
+			new CustomerAddressChangeEvent(this._id, this._name, {
+				street: address.street,
+				number: address.number,
+				zip: address.zip,
+				city: address.city,
+			}),
+		);
 	}
 
 	validate() {
