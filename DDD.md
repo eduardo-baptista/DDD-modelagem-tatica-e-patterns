@@ -1,6 +1,6 @@
 # Elementos táticos
 
-Precisamos ser capaz de modelar de forma mais acertiva de forma mais acertiva os seus principais componentes, comportamentos e individualidade, bem como suas relações.
+Precisamos ser capaz de modelar de forma mais assertiva os seus principais componentes, comportamentos e individualidade, bem como suas relações.
 
 comportamentos refletem as regras de negócios
 
@@ -108,3 +108,56 @@ Um repositório comumente se refere a um local de armazenamento, geralmente cons
 Quando você armazena algo em um repositório e depois retorna para recuperá-lo, você espera que o que você recuperou seja o mesmo que o que você armazenou.
 
 - Normalmente se cria um repositório por agregado
+
+# Domain Events
+
+Use um evento de domínio quando algo significativo acontecer no domínio que outros precisam saber.
+
+Eventos de domínio são processados para causar alterações no sistema e armazenados para fornecer um AuditLog.
+
+- Todo evento deve ser representado em uma ação realizada no passado. exs: OrderCreated, CustomerUpdated
+
+## Quando usar
+
+- Normalmente um Domain Event deve ser utilizado quando queremos notificar outro Bounded Context de uma mudança de estado.
+
+## Componentes
+
+- Event
+    - Quando aconteceu
+    - O que aconteceu
+- Handler
+    - O que fazer quando acontecer
+    - Executa o processamento quando um evento é chamado
+- Event Dispatcher
+    - Dispara os eventos
+    - Registra os handlers
+    - Encaixa os eventos para os handlers
+
+# Módulos
+
+Em um contexto DDD, módulos em seu código são uma forma de organizar e agrupar classes relacionadas.
+
+- Separa em bounded contexts
+- devem ser nomeados de acordo com o contexto, não sendo algo genérico
+    - busca trazer mais expressividade
+
+- Respeitar a linguagem Universal
+- Baixo acoplamento
+- Um ou mais agregados devem estar juntos somente se fazem sentido
+- Organizar pelo domínio / subdomínio e não pelo tipo de objetos
+- Devem respeitar a mesma divisão quando estão em camadas diferentes
+    - infra
+    - application
+
+# Factories
+
+Desloque a responsabilidade de criar instâncias de objetos complexos e AGREGADOS para um objeto separado.
+
+- Criação de objetos complexos
+- Criação de agregados inteiros
+    - Reforçando sua invariantes
+- Precisa ser expressiva assim como o domínio
+- Fornece uma interface para criar objetos
+
+Dentro do DDD quando falamos em factory normalmente se esta relacionado a [factory method](https://refactoring.guru/pt-br/design-patterns/factory-method).
